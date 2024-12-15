@@ -69,6 +69,11 @@ public:
     T query(int l, int r) {
         return query(1, 0, n - 1, l, r);
     }
+
+    T operator[](size_t i) const {
+        if (i >= tree.size()) throw out_of_range("Index out of bound");
+        return tree[i];
+    }
 };
 
 int main()
@@ -81,6 +86,6 @@ int main()
     cout << "Max in range [1, 4]: " << maxTree.query(1, 4) << '\n';
     maxTree.update(2, 10);
     cout << "Max in range [1, 4] after update: " << maxTree.query(1, 4) << '\n';
-
+    cout << "maxTree[1] : " << maxTree[1] << '\n';
     return 0;
 }
