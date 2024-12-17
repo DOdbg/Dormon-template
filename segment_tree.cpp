@@ -10,7 +10,7 @@ private:
     vector<T> tree;
     int n;
     T neutralValue;
-    function<T(T, T)> merge;
+    function<T(T, T)> func;
 
     void build(const vector<T> &arr, int u, int l, int r) {
         if (l == r) {
@@ -20,7 +20,7 @@ private:
         int mid = (l+r)/2;
         build(arr, 2*u, l, mid);
         build(arr, 2*u+1, mid+1, r);
-        tree[u] = merge(tree[2*u], tree[2*u+1]);
+        tree[u] = func(tree[2*u], tree[2*u+1]);
     }
 
     void update(int u, int l, int r, int idx, T value) {
@@ -33,7 +33,7 @@ private:
             update(2*u, l, mid, idx, value);
         else
             update(2*u+1, mid+1, r, idx, value);
-        tree[u] = merge(tree[2*u], tree[2*u+1]);
+        tree[u] = func(tree[2*u], tree[2*u+1]);
     }
 
     T query(int u, int l, int r, int st, int en) {
@@ -44,21 +44,21 @@ private:
         int mid = (l+r)/2;
         T leftQuery = query(2*u, l, mid, st, en);
         T rightQuery = query(2*u+1, mid+1, r, st, en);
-        return merge(leftQuery, rightQuery);
+        return func(leftQuery, rightQuery);
     }
 
 public:
-    SegmentTree(const vector<T> &arr, T neutral, function<T(T, T)> mergeFunc) {
+    SegmentTree(const vector<T> &arr, T neutral, function<T(T, T)> funcFunc) {
         n = arr.size();
         neutralValue = neutral;
-        merge = mergeFunc;
+        func = funcFunc;
         tree.resize(4*n, neutralValue);
         build(arr, 1, 0, n - 1);
     }
 
-    SegmentTree(int sz, T neutral, function<T(T, T)> mergeFunc) {
+    SegmentTree(int sz, T neutral, function<T(T, T)> funcFunc) {
         neutralValue = neutral;
-        merge = mergeFunc;
+        func = funcFunc;
         tree.resize(4*sz, neutralValue);
     }
 
@@ -80,8 +80,8 @@ int main()
 {
     vector<int> arr = {1, 3, 5, 7, 9, 11};
 
-    auto maxMerge = [](int a, int b) { return max(a, b); };
-    SegmentTree<int> maxTree(arr, -1e9, maxMerge);
+    auto maxfunc = [](int a, int b) { return max(a, b); };
+    SegmentTree<int> maxTree(arr, -1e9, maxfunc);
 
     cout << "Max in range [1, 4]: " << maxTree.query(1, 4) << '\n';
     maxTree.update(2, 10);
