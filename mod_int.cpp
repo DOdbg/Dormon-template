@@ -42,7 +42,9 @@ public:
     mod_int operator/(const mod_int& b) const {
         return *this * b.inv();
     }
-
+    mod_int operator%(const mod_int& b) const {
+        return mod_int(val % b.val);
+    }
     mod_int& operator+=(const mod_int& b) {
         val = Mod(val + b.val);
         return *this;
@@ -59,7 +61,10 @@ public:
         *this = *this * b.inv();
         return *this;
     }
-
+    mod_int& operator%=(const mod_int& b) {
+        val = Mod(val % b.val);
+        return *this;
+    }
     mod_int inv() const {
         return mod_int(mod_pow(val, mod-2));
     }
