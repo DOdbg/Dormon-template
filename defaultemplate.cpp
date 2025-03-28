@@ -8,9 +8,10 @@
 #include <numeric>
 #include <array>
 #include <iomanip> // cout << fixed << setprecision(n);
+#include <cmath>
 
 using namespace std;
-const bool TEST_CASE = 0;
+const bool TEST_CASE = true;
 
 template<typename T>
 typename std::enable_if<std::is_integral<T>::value>::type
